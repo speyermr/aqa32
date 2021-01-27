@@ -3,18 +3,30 @@ from instructions import *
 
 MEMORY_SIZE = 256
 
-class Emulator():
-    def __init__(self):
-        self.registers = [0] * 13
-        self.pc = 0
-        self.memory = [0] * MEMORY_SIZE
-        self.cmp = 0
-        self.screen = ''
-        self.halted = False
+def build(code):
+    memory = [0] * MEMORY_SIZE
+    for i, b in enumerate(code):
+        memory[i] = b
+    registers = [0] * 13
+    return Emulator(registers, memory, 0, 0, '', False)
 
-    def load(self, code):
-        for i, b in enumerate(code):
-            self.memory[i] = b
+class Emulator():
+    def __init__(self, registers, memory, pc, cmp, screen, halted):
+        self.registers = registers
+        self.memory = memory
+        self.pc = pc
+        self.cmp = cmp
+        self.screen = screen
+        self.halted = halted
+
+    def copy(self):
+        return Emulator(
+                self.registers[:],
+                self.memory[:],
+                self.pc,
+                self.cmp,
+                self.screen,
+                self.halted)
 
     def step(self):
         r = self.registers

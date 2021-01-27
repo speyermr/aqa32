@@ -1,5 +1,5 @@
 from assembler import assemble
-from emulator import Emulator
+import emulator
 from render import render
 from time import sleep 
 
@@ -19,12 +19,16 @@ greeting:
 
 code, sourcemap = assemble(example)
 
-e = Emulator()
-e.load(code)
+e = emulator.build(code)
 
 RESET = "\033[0;0H"
 
+history = []
 while not e.halted:
+    history.append(e.copy())
     e.step()
-    print(RESET + render(e, example, sourcemap))
-    sleep(0.1)
+
+while True:
+    for e in history:
+        print(RESET + render(e, example, sourcemap))
+        sleep(0.1)
