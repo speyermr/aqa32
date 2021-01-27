@@ -1,4 +1,7 @@
 from assembler import assemble
+from emulator import Emulator
+from render import render
+from time import sleep 
 
 example = '''
 start:  MOV R0, #5
@@ -14,5 +17,14 @@ greeting:
         0x21000000
 '''
 
-code = assemble(example)
-print(code)
+code, sourcemap = assemble(example)
+
+e = Emulator()
+e.load(code)
+
+RESET = "\033[0;0H"
+
+while not e.halted:
+    e.step()
+    print(RESET + render(e, example, sourcemap))
+    sleep(0.1)

@@ -1,3 +1,4 @@
+from constants import *
 from instructions import *
 
 MEMORY_SIZE = 256
@@ -17,8 +18,8 @@ class Emulator():
 
     def step(self):
         r = self.registers
-        word = self.memory[pc]
-        pc += 1
+        word = self.memory[self.pc]
+        self.pc += 1
 
         opcode = (word >> 27) & 0b11111
         rn = (word >> 23) & 0b1111
@@ -27,13 +28,11 @@ class Emulator():
         op2 = word & 0xff
 
         instruction = INSTRUCTIONS[opcode]
-        if address_mode == AM_DIRECT:
-            op2 = reg
+        if address_mode == ADDRESS_MODE_DIRECT:
+            op2 = r[op2]
 
         if instruction == HALT:
             self.halted = True
-        elif instruction == NOOP:
-            pass
         elif instruction == LDR:
             r[rd] = self.memory[op2]
         elif instruction == STR: 
