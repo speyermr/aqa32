@@ -1,16 +1,12 @@
-INSTRUCTIONS = [
-        'LDR', 'STR', 'ADD', 'SUB', 'MOV', 'CMP', 'B', 'BEQ', 'BNE', 'BGT',
-        'BLT', 'AND', 'ORR', 'EOR', 'MVN', 'LSL', 'LSR', 'HALT', 'INP', 'OUT',
-        ]
+from instructions import *
 
-SIZE = 256
+MEMORY_SIZE = 256
 
 class Emulator():
-    PC = 13
-
     def __init__(self):
-        self.registers = [0] * 14
-        self.memory = [0] * SIZE
+        self.registers = [0] * 13
+        self.pc = 0
+        self.memory = [0] * MEMORY_SIZE
         self.cmp = 0
         self.screen = ''
         self.halted = False
@@ -21,8 +17,8 @@ class Emulator():
 
     def step(self):
         r = self.registers
-        word = self.memory[r[PC]]
-        r[PC] += 1
+        word = self.memory[pc]
+        pc += 1
 
         opcode = (word >> 27) & 0b11111
         rn = (word >> 23) & 0b1111
@@ -30,55 +26,55 @@ class Emulator():
         address_mode = (word >> 16) & 0b111
         op2 = word & 0xff
 
-        opcode = INSTRUCTIONS[opcode]
+        instruction = INSTRUCTIONS[opcode]
         if address_mode == AM_DIRECT:
             op2 = reg
 
-        if opcode == HALT:
+        if instruction == HALT:
             self.halted = True
-        elif opcode == NOOP:
+        elif instruction == NOOP:
             pass
-        elif opcode == LDR:
+        elif instruction == LDR:
             r[rd] = self.memory[op2]
-        elif opcode == STR: 
+        elif instruction == STR: 
             self.memory[op2] = r[rd]
-        elif opcode == ADD:
+        elif instruction == ADD:
             r[rd] = r[rn] + op2
-        elif opcode == SUB:
+        elif instruction == SUB:
             r[rd] = r[rn] - op2
-        elif opcode == MOV:
+        elif instruction == MOV:
             r[rd] = op2
-        elif opcode == CMP:
+        elif instruction == CMP:
             self.cmp = r[rn] - op2
-        elif opcode == B:
-            r[PC] = op2
-        elif opcode == BEQ:
+        elif instruction == B:
+            pc = op2
+        elif instruction == BEQ:
             if self.cmp == 0:
-                r[PC] = op2
-        elif opcode == BNE:
+                pc = op2
+        elif instruction == BNE:
             if self.cmp != 0:
-                r[PC] = op2
-        elif opcode == BGT:
+                pc = op2
+        elif instruction == BGT:
             if self.cmp > 0:
-                r[PC] = op2
-        elif opcode == BLT:
+                pc = op2
+        elif instruction == BLT:
             if self.cmp < 0:
-                r[PC] = op2
-        elif opcode == AND:
+                pc = op2
+        elif instruction == AND:
             r[rd] = r[rn] & op2
-        elif opcode == ORR:
+        elif instruction == ORR:
             r[rd] = r[rn] & op2
-        elif opcode == EOR:
+        elif instruction == EOR:
             r[rd] = r[rn] ^ op2
-        elif opcode == MVN:
+        elif instruction == MVN:
             r[rd] = ~ op2
-        elif opcode == LSL:
+        elif instruction == LSL:
             r[rd] = r[rn] << op2
-        elif opcode == LSR:
+        elif instruction == LSR:
             r[rd] = r[rn] >> op2
-        elif opcode == INP:
+        elif instruction == INP:
             input()
-        elif opcode == OUT:
+        elif instruction == OUT:
             if op2 == DEV_UINT:
                 self.screen += str(r[rn])
             elif op2 == DEV_CHAR:
