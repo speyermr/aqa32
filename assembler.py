@@ -1,7 +1,4 @@
-INSTRUCTIONS = [
-        'LDR', 'STR', 'ADD', 'SUB', 'MOV', 'CMP', 'B', 'BEQ', 'BNE', 'BGT',
-        'BLT', 'AND', 'ORR', 'EOR', 'MVN', 'LSL', 'LSR', 'HALT', 'INP', 'OUT',
-        ]
+from instructions import *
 
 DIRECT = 0
 IMMEDIATE = 1
