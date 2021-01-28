@@ -1,5 +1,17 @@
 # AQA Assembly
 
+
+```Python
+import aqa32
+
+aqa32.emulate('''
+start:  MOV R0, #5
+        MOV R1, #6
+        ADD R2, R0, R1
+        HALT
+''')
+```
+
 ## Instructions
 
     B   address
