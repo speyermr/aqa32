@@ -14,9 +14,9 @@ def assemble(text):
                 word = encode(labels, *tokens)
             except Exception as ex:
                 address = len(exe)
-                line_number = sourcemap[address]
-                line = lines[line_number - 1].strip()
-                raise Exception(f'in line {line_number} "{line}": {ex}')
+                ii = sourcemap[address]
+                line = lines[ii].strip()
+                raise Exception(f'in instruction {ii} "{line}": {ex}')
         else:
             word = int(head, 0)
         exe.append(word)
@@ -88,8 +88,7 @@ def parse(lines):
     labels = {}
     sourcemap = {}
     label = None
-    for index, line in enumerate(lines):
-        line_number = index + 1
+    for ii, line in enumerate(lines):
         tokens = tokenize(line)
         if tokens == []:
             continue # Empty line
@@ -103,7 +102,7 @@ def parse(lines):
         if label:
             labels[label] = address
         assembly.append(tokens)
-        sourcemap[address] = line_number
+        sourcemap[address] = ii
         label = None
     return assembly, labels, sourcemap
 
