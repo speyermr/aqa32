@@ -2,7 +2,7 @@ main:   MOV  R5, #5     // Inline label
         MOV  R6, PC
         ADD  R6, R6, #2
         B  factorial
-        OUT  R4, #4
+        OUT  R4, 4
         HALT
 
         // R0 = R1 * R2; return to address in memory @R3
@@ -19,11 +19,11 @@ multiple_inner:
 factorial:
         MOV R4, #1
 factorial_inner:
-        OUT R5, #4
+        OUT R5, 4
         CMP R5, #1
         BEQ factorial_return
         MOV R9, #0x2a
-        OUT R9, #7
+        OUT R9, 7
         // R4 = R4 * R5
         // R5--
         MOV R1, R4
@@ -36,7 +36,7 @@ factorial_inner:
         B factorial_inner
 factorial_return:
         MOV R9, #0x3D
-        OUT R9, #7
+        OUT R9, 7
         MOV PC, R6
 
 0xedededed

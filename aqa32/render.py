@@ -27,8 +27,10 @@ def render(emulator, assembly, sourcemap):
     draw(2, 5, '>' + emulator.screen)
 
     lines = assembly.splitlines()
-    for ln, line in enumerate(lines):
+    for i, line in enumerate(lines):
+        ln = i + 1
         mk = '>' if emulator.pc == ln else ' '
-        draw(2, 7 + ln, f'{mk} {ln} {line}')
+        if 7 + ln < 24:
+            draw(2, 7 + ln, f'{mk} {ln} {line}')
 
     return "\n".join(''.join(row) for row in frame)

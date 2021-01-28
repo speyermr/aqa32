@@ -15,7 +15,7 @@ def assemble(text):
             except Exception as ex:
                 address = len(exe)
                 line_number = sourcemap[address]
-                line = lines[line_number].strip()
+                line = lines[line_number - 1].strip()
                 raise Exception(f'in line {line_number} "{line}": {ex}')
         else:
             word = int(head, 0)
@@ -88,7 +88,8 @@ def parse(lines):
     labels = {}
     sourcemap = {}
     label = None
-    for line_number, line in enumerate(lines):
+    for index, line in enumerate(lines):
+        line_number = index + 1
         tokens = tokenize(line)
         if tokens == []:
             continue # Empty line
