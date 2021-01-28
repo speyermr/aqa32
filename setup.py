@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
         name='aqa32',
-        version='4.3',
+        version='4.4',
         description='AQA32 Instruction Set: Assembler and Emulator',
         author='E G Speyer',
         author_email='python@edwardspeyer.com',
