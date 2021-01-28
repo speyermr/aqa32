@@ -1,5 +1,5 @@
-from constants import *
-from instructions import *
+from aqa32.constants import *
+from aqa32.instructions import *
 
 MEMORY_SIZE = 256
 

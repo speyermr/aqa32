@@ -1,4 +1,4 @@
-from instructions import *
+from aqa32.instructions import *
 
 DIRECT = 0
 IMMEDIATE = 1
